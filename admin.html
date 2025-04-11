@@ -1,0 +1,179 @@
+﻿<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>لوحة تحكم الأدمن</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      direction: rtl;
+      background-color: #f4f6f8;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: 50px auto;
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+    }
+
+    h2 {
+      text-align: center;
+      color: #2e3b55;
+    }
+
+    input, button {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background-color: #2b6cb0;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .request {
+      background-color: #edf2f7;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 10px 0;
+    }
+
+    .request p {
+      margin: 5px 0;
+    }
+
+    .request button {
+      width: 48%;
+      margin-top: 10px;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: space-between;
+      gap: 5px;
+    }
+
+    .notification {
+      color: green;
+      text-align: center;
+      margin: 10px 0;
+    }
+
+    .logout-btn {
+      background-color: #e53e3e;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- صفحة الدخول -->
+  <div class="container" id="loginPage">
+    <h2>تسجيل دخول الأدمن</h2>
+    <input type="email" id="adminEmail" placeholder="البريد الإلكتروني" required>
+    <input type="password" id="adminPassword" placeholder="كلمة المرور" required>
+    <button onclick="login()">دخول</button>
+    <p id="loginError" style="color:red; text-align:center;"></p>
+  </div>
+
+  <!-- لوحة التحكم -->
+  <div class="container hidden" id="adminDashboard">
+    <h2>لوحة التحكم</h2>
+    <div id="requestsContainer"></div>
+
+    <h3>تغيير كلمة المرور</h3>
+    <input type="password" id="newPassword" placeholder="كلمة المرور الجديدة">
+    <button onclick="changePassword()">تغيير</button>
+    <p id="passwordMessage" class="notification"></p>
+
+    <button class="logout-btn" onclick="logout()">تسجيل الخروج</button>
+  </div>
+
+  <script>
+    // بيانات الدخول الافتراضية
+    const defaultEmail = "ibriheemm176@gmail.com";
+    const defaultPassword = localStorage.getItem("adminPassword") || "1234";
+
+    // تسجيل الدخول
+    function login() {
+      const email = document.getElementById("adminEmail").value;
+      const password = document.getElementById("adminPassword").value;
+
+      if (email === defaultEmail && password === defaultPassword) {
+        document.getElementById("loginPage").classList.add("hidden");
+        document.getElementById("adminDashboard").classList.remove("hidden");
+        loadRequests();
+      } else {
+        document.getElementById("loginError").textContent = "بيانات الدخول غير صحيحة.";
+      }
+    }
+
+    // تغيير كلمة المرور
+    function changePassword() {
+      const newPass = document.getElementById("newPassword").value;
+      if (newPass.length >= 4) {
+        localStorage.setItem("adminPassword", newPass);
+        document.getElementById("passwordMessage").textContent = "تم تغيير كلمة المرور بنجاح.";
+        document.getElementById("newPassword").value = "";
+      } else {
+        document.getElementById("passwordMessage").textContent = "يجب أن تكون كلمة المرور 4 أحرف أو أكثر.";
+      }
+    }
+
+    // تسجيل الخروج
+    function logout() {
+      location.reload();
+    }
+
+    // تحميل طلبات الاشتراك (محاكاة بيانات)
+    const mockRequests = [
+      { id: 1, name: "أحمد علي", phone: "07701234567", plan: "شهري" },
+      { id: 2, name: "سارة محمد", phone: "07807654321", plan: "3 أشهر" }
+    ];
+
+    function loadRequests() {
+      const container = document.getElementById("requestsContainer");
+      container.innerHTML = "";
+
+      mockRequests.forEach(req => {
+        const div = document.createElement("div");
+        div.className = "request";
+        div.innerHTML = `
+          <p><strong>الاسم:</strong> ${req.name}</p>
+<p><strong>الهاتف:</strong> ${req.phone}</p>
+          <p><strong>الخطة:</strong> ${req.plan}</p>
+          <div class="actions">
+            <button onclick="approve('${req.name}')">موافقة</button>
+            <button onclick="reject('${req.name}')">رفض</button>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    // إشعارات
+    function approve(name) {
+      alert("تمت الموافقة على اشتراك " + name);
+    }
+
+    function reject(name) {
+      alert("تم رفض اشتراك " + name);
+    }
+  </script>
+
+</body>
+</html>

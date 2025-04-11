@@ -1,0 +1,130 @@
+﻿<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لوحة تحكم محامي تكريت</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      background-color: #f4f6f7;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 50px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      text-align: center;
+      font-size: 2.5em;
+      margin-bottom: 30px;
+      color: #34495e;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    table th, table td {
+      padding: 15px;
+      border: 1px solid #ddd;
+      text-align: center;
+    }
+    table th {
+      background-color: #3498db;
+      color: white;
+    }
+    .btn-approve {
+      background-color: #27ae60;
+      color: white;
+      padding: 8px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-reject {
+      background-color: #e74c3c;
+      color: white;
+      padding: 8px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      border: none;
+    }
+    .footer {
+      text-align: center;
+      font-size: 0.9em;
+      color: #777;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>لوحة تحكم محامي تكريت</h1>
+
+    <!-- جدول عرض الطلبات -->
+    <table>
+      <thead>
+        <tr>
+          <th>اسم المشترك</th>
+          <th>رقم الهاتف</th>
+          <th>نوع الاشتراك</th>
+          <th>صورة الوصل</th>
+          <th>التحكم</th>
+        </tr>
+      </thead>
+      <tbody id="requests">
+        <!-- سيتم إضافة الطلبات هنا باستخدام JavaScript -->
+      </tbody>
+    </table>
+
+    <!-- Footer -->
+    <div class="footer">
+      تم تطوير الموقع من قبل المحامي إبراهيم محمد الناصري
+    </div>
+  </div>
+
+  <script>
+    // بيانات الطلبات المبدئية (يمكنك استبدالها ببيانات حقيقية من قاعدة بيانات)
+    const requests = [
+      { name: 'علي محمد', phone: '07700000001', subscription: 'شهر - 5000 دينار', receipt: 'receipt1.jpg' },
+      { name: 'أحمد حسن', phone: '07700000002', subscription: 'ثلاثة أشهر - 15000 دينار', receipt: 'receipt2.jpg' },
+      { name: 'سمية عبد الله', phone: '07700000003', subscription: 'ستة أشهر - 30000 دينار', receipt: 'receipt3.jpg' }
+    ];
+
+    // عرض الطلبات في الجدول
+    const requestsTable = document.getElementById('requests');
+    requests.forEach(request => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${request.name}</td>
+        <td>${request.phone}</td>
+        <td>${request.subscription}</td>
+        <td><img src="${request.receipt}" alt="Receipt" style="width: 80px; height: 80px; object-fit: cover;"></td>
+        <td>
+          <button class="btn-approve" onclick="approveRequest('${request.name}')">موافقة</button>
+          <button class="btn-reject" onclick="rejectRequest('${request.name}')">رفض</button>
+        </td>
+      `;
+      requestsTable.appendChild(row);
+    });
+
+    // دالة الموافقة على الطلب
+    function approveRequest(name) {
+      alert(`تمت الموافقة على طلب ${name}`);
+    }
+
+    // دالة رفض الطلب
+    function rejectRequest(name) {
+      alert(`تم رفض طلب ${name}`);
+    }
+  </script>
+</body>
+</html>
